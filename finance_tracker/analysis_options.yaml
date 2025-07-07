@@ -1,0 +1,51 @@
+analyzer:
+  plugins:
+    - custom_lint
+  errors:
+    depend_on_referenced_packages: ignore
+    use_build_context_synchronously: ignore
+    unused_import: warning
+    unused_local_variable: warning
+    prefer_const_constructors: warning
+    prefer_const_declarations: warning
+    prefer_final_locals: warning
+    prefer_final_fields: warning
+    avoid_print: warning # Encourage logging instead of print statements
+    always_declare_return_types: warning
+
+#include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # --- Code Style ---
+    prefer_single_quotes: true # Enforce single quotes
+    prefer_const_constructors: true # Use `const` for constructors when possible
+    prefer_const_declarations: true # Use `const` for immutable variables
+    prefer_final_locals: true # Use `final` for local variables where possible
+    prefer_final_fields: true # Use `final` for class fields that are never reassigned
+    unnecessary_this: true # Avoid unnecessary `this.` in constructors or methods
+
+    # --- Performance & Best Practices ---
+    avoid_redundant_argument_values: true # Remove redundant default values
+    avoid_unnecessary_containers: true # Avoid wrapping widgets with unnecessary Containers
+    avoid_empty_else: true # Discourage empty else statements
+    omit_local_variable_types: false # Explicitly declare variable types
+    always_specify_types: false # Encourage specifying types explicitly
+
+    # --- Readability & Maintainability ---
+    lines_longer_than_80_chars: false # Allow longer lines if necessary
+    require_trailing_commas: true # Ensure trailing commas in multiline collections/constructors
+    curly_braces_in_flow_control_structures: true # Require curly braces for if/else statements
+    unnecessary_lambdas: true # Replace unnecessary lambda functions with direct method references
+    avoid_positional_boolean_parameters: false # Use named parameters for better readability
+    avoid_setters_without_getters: true # Discourage setter-only properties without a getter
+
+    # --- Safety ---
+    avoid_dynamic_calls: false # Prevent dynamic function calls
+    avoid_null_checks_in_equality_operators: true # Avoid checking for null directly in `==`
+    avoid_bool_literals_in_conditional_expressions: true # Use meaningful conditions instead of `if (true)`
+
+    # --- Flutter Specific ---
+    prefer_const_literals_to_create_immutables: true # Use `const` when creating immutable lists/maps
+    use_key_in_widget_constructors: true # Always include a `key` in widgets
+    avoid_print: true # Discourage using `print`, prefer logging instead
