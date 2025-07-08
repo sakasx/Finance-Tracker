@@ -32,64 +32,67 @@ class LogsPage extends StatelessWidget {
           } else {
             // Data loaded successfully, show list
             final entries = snapshot.data!;
-            return ListView.builder(
-              itemCount: entries.length,
-              itemBuilder: (context, index) {
-                final entry = entries[index];
-                return Padding(
-                  padding: const EdgeInsets.all(7.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: isDarkModeNotifier.value ? Colors.black : Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            child: Icon(entry.category.icon, color: Colors.white),
-                            width: 35,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: entry.category.color,
-                              shape: BoxShape.circle,
+            return Container(
+              padding: EdgeInsets.only(bottom: 75),
+              child: ListView.builder(
+                itemCount: entries.length,
+                itemBuilder: (context, index) {
+                  final entry = entries[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(left:7.0, right: 7.0, top: 7.0, bottom: 4),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: isDarkModeNotifier.value ? Colors.black : Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          children: [
+                            Container(
+                              child: Icon(entry.category.icon, color: Colors.white),
+                              width: 35,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: entry.category.color,
+                                shape: BoxShape.circle,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 12.0),
-                          Text(
-                            entry.category.name,
-                            style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
-                          ),
-                          const Spacer(),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                '${entry.type.valueType}${entry.amount.toString()}', //'entry.type.text entry.amount.toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                  color: entry.type.color,
+                            const SizedBox(width: 12.0),
+                            Text(
+                              entry.category.name,
+                              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+                            ),
+                            const Spacer(),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  '${entry.type.valueType}${entry.amount.toString()}', //'entry.type.text entry.amount.toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    color: entry.type.color,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                entry.date.toString().substring(0, 10),
-                                textAlign: TextAlign.end,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12,
-                                  color: Colors.grey,
+                                Text(
+                                  entry.date.toString().substring(0, 10),
+                                  textAlign: TextAlign.end,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             );
           }
         },
