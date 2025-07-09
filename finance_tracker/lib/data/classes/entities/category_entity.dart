@@ -22,15 +22,15 @@ extension CategoryExtension on Category {
   Color get color {
     switch (this) {
       case Category.food:
-        return Colors.red;
+        return Colors.red.shade300;
       case Category.shopping:
-        return Colors.green;
+        return Colors.green.shade300;
       case Category.transport:
-        return Colors.blue;
+        return Colors.blue.shade200;
       case Category.entertainment:
-        return Colors.purple;
+        return Colors.yellow.shade300;
       case Category.other:
-        return Colors.grey;
+        return Colors.orange.shade300;
     }
   }
 
@@ -115,4 +115,11 @@ class FinancialEntry {
     description: json['description'],
     type: Type.values.firstWhere((element) => element.name == json['type']),
   );
+}
+
+class CategorySpending {
+  final Category category;
+  final double totalAmount;
+
+  CategorySpending({required this.category, required this.totalAmount});
 }

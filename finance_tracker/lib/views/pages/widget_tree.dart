@@ -1,6 +1,6 @@
 import 'package:finance_tracker/data/notifiers.dart';
-import 'package:finance_tracker/views/pages/home_page.dart';
-import 'package:finance_tracker/views/pages/logs_page.dart';
+import 'package:finance_tracker/views/pages/home_screen/view/home_page.dart';
+import 'package:finance_tracker/views/pages/logs_screen/view/logs_page.dart';
 import 'package:finance_tracker/views/pages/profile_page.dart';
 import 'package:finance_tracker/views/settings_page.dart';
 import 'package:finance_tracker/widgets/navbar.dart';

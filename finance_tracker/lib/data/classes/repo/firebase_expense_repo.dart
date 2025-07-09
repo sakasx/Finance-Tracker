@@ -28,6 +28,16 @@ class FirebaseExpenseRepo {
         .map((event) => event.docs.map((e) => FinancialEntry.fromJson(e.data())).toList());
   }
 
+  Future<int> countEntry() {
+    final id = authenticationRepository.currentUser.id;
+    return expenseCollection
+        .doc(id)
+        .collection('expenses')
+        .snapshots()
+        .map((event) => event.docs.map((e) => FinancialEntry.fromJson(e.data())).toList())
+        .length;
+  }
+
   // Future<List<FinancialEntry>> getEntry() async {
   //   final id = authenticationRepository.currentUser.id;
   //   try {
