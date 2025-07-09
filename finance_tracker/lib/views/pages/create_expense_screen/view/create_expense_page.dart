@@ -45,53 +45,6 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       style: (TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
                     ),
                   ),
-                  // TextFormField(
-                  //   controller: typeController,
-                  //   onTap: () {},
-                  //   decoration: InputDecoration(
-                  //     border: OutlineInputBorder(),
-                  //     suffixIcon: IconButton(
-                  //       onPressed: () {
-                  //         showDialog(
-                  //           context: context,
-                  //           builder: (context) => AlertDialog(
-                  //             title: const Text('Select Category'),
-                  //             content: Column(
-                  //               mainAxisSize: MainAxisSize.min,
-                  //               children: [
-                  //                 ListTile(
-                  //                   title: const Text('Expense'),
-                  //                   onTap: () {
-                  //                     setState(() {
-                  //                       typeController.text = 'Expense';
-                  //                     });
-                  //                     Navigator.pop(context);
-                  //                   },
-                  //                 ),
-                  //                 ListTile(
-                  //                   title: const Text('Income'),
-                  //                   onTap: () {
-                  //                     setState(() {
-                  //                       typeController.text = 'Income';
-                  //                     });
-                  //                     Navigator.pop(context);
-                  //                   },
-                  //                 ),
-                  //               ],
-                  //             ),
-                  //           ),
-                  //         );
-                  //       },
-                  //       icon: Icon(Icons.arrow_drop_down_circle_outlined),
-                  //     ),
-                  //     labelText: 'Type',
-                  //   ),
-                  //   readOnly: true,
-
-                  //   onEditingComplete: () {
-                  //     setState(() {});
-                  //   },
-                  // ),
                   DropdownButton(
                     hint: const Text('Category'),
                     value: categoryController.text.isEmpty ? null : categoryController.text,

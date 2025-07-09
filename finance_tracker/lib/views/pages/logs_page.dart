@@ -21,17 +21,14 @@ class LogsPage extends StatelessWidget {
         stream: firebaseExpenseRepo.getEntry(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            // While loading show progress indicator
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            // Show error message
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            // Show empty state if no data
             return const Center(child: Text('No Entries found.'));
           } else {
-            // Data loaded successfully, show list
             final entries = snapshot.data!;
+            entries.sort((a, b) => b.date.compareTo(a.date));
             return ListView.builder(
               itemCount: entries.length,
               itemBuilder: (context, index) {
