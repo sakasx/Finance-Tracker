@@ -17,7 +17,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   }
 
   final AuthenticationRepository _authenticationRepository;
-
   Future<void> _onUserSubscriptionRequested(
     AppUserSubscriptionRequested event,
     Emitter<AppState> emit,

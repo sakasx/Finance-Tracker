@@ -25,6 +25,8 @@ class WidgetTree extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (context) => const SettingsPage(title: 'Settings')),
               );
+              Navigator.pop(context);
+              
             },
           ),
         ],

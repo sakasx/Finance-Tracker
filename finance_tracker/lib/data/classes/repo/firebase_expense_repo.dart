@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:finance_tracker/data/classes/entities/category_entity.dart';
 import 'package:finance_tracker/data/classes/repo/authentication_repository.dart';
-import 'package:finance_tracker/data/classes/repo/expense_repository.dart';
+import 'package:finance_tracker/main.dart';
 
 class FirebaseExpenseRepo {
   FirebaseExpenseRepo({required this.authenticationRepository});
@@ -12,7 +14,8 @@ class FirebaseExpenseRepo {
   Future<void> createFinancialEntry(FinancialEntry expense) async {
     final id = authenticationRepository.currentUser.id;
     try {
-      await expenseCollection.doc(id).collection('expenses').add(expense.toJson());
+      await objectbox.expenseBox.put(expense);
+      unawaited(expenseCollection.doc(id).collection('expenses').add(expense.toJson()));
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -28,27 +31,15 @@ class FirebaseExpenseRepo {
         .map((event) => event.docs.map((e) => FinancialEntry.fromJson(e.data())).toList());
   }
 
-  Future<int> countEntry() {
+  Future<void> syncFromFirebaseToObjectBox() async {
+    objectbox.expenseBox.removeAll();
     final id = authenticationRepository.currentUser.id;
-    return expenseCollection
-        .doc(id)
-        .collection('expenses')
-        .snapshots()
-        .map((event) => event.docs.map((e) => FinancialEntry.fromJson(e.data())).toList())
-        .length;
-  }
+    final snapshot = await expenseCollection.doc(id).collection('expenses').get();
 
-  // Future<List<FinancialEntry>> getEntry() async {
-  //   final id = authenticationRepository.currentUser.id;
-  //   try {
-  //     return await expenseCollection
-  //         .doc(id)
-  //         .collection('expenses')
-  //         .get()
-  //         .then((value) => value.docs.map((e) => FinancialEntry.fromJson(e.data())).toList());
-  //   } catch (e) {
-  //     log(e.toString());
-  //     rethrow;
-  //   }
-  // }
+    final entries = snapshot.docs.map((doc) {
+      return FinancialEntry.fromJson(doc.data());
+    }).toList();
+
+    objectbox.expenseBox.putMany(entries);
+  }
 }

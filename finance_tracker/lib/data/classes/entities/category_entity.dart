@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:finance_tracker/data/classes/entities/category_entity.dart';
+import 'package:objectbox/objectbox.dart';
+//import 'objectbox.g.dart';
 
 enum Category { food, shopping, transport, entertainment, other }
 
@@ -50,53 +53,86 @@ extension CategoryExtension on Category {
   }
 }
 
-enum Type { income, expense }
+enum EntryType { income, expense }
 
-extension TypeExtension on Type {
+extension TypeExtension on EntryType {
   String get name {
     switch (this) {
-      case Type.income:
+      case EntryType.income:
         return 'Income';
-      case Type.expense:
+      case EntryType.expense:
         return 'Expense';
     }
   }
 
   Color get color {
     switch (this) {
-      case Type.income:
+      case EntryType.income:
         return Colors.green;
-      case Type.expense:
+      case EntryType.expense:
         return Colors.red;
     }
   }
 
   String get valueType {
     switch (this) {
-      case Type.income:
+      case EntryType.income:
         return '+';
-      case Type.expense:
+      case EntryType.expense:
         return '-';
     }
   }
 }
 
+@Entity()
 class FinancialEntry {
-  final Category category;
-  final double amount;
-  final DateTime date;
-  final String description;
-  final Type type;
+  @Id()
+  int id = 0;
+
+  @Property()
+  int categoryIndex;
+
+  @Property()
+  int typeIndex;
+
+  @Property(type: PropertyType.date)
+  DateTime date;
+
+  double amount;
+  String description;
+
+  @Transient()
+  Category get category => Category.values[categoryIndex];
+  @Transient()
+  set category(Category value) => categoryIndex = value.index;
+
+  @Transient()
+  EntryType get type => EntryType.values[typeIndex];
+  @Transient()
+  set type(EntryType value) => typeIndex = value.index;
 
   FinancialEntry({
-    required this.category,
+    required this.categoryIndex,
+    required this.typeIndex,
     required this.amount,
     required this.date,
     required this.description,
-    required this.type,
   });
 
-  //toJson
+  factory FinancialEntry.withEnums({
+    required Category category,
+    required EntryType type,
+    required double amount,
+    required DateTime date,
+    required String description,
+  }) => FinancialEntry(
+    categoryIndex: category.index,
+    typeIndex: type.index,
+    amount: amount,
+    date: date,
+    description: description,
+  );
+
   Map<String, dynamic> toJson() => {
     'category': category.name,
     'amount': amount,
@@ -105,15 +141,14 @@ class FinancialEntry {
     'type': type.name,
   };
 
-  //fromJson
-  factory FinancialEntry.fromJson(Map<String, dynamic> json) => FinancialEntry(
+  factory FinancialEntry.fromJson(Map<String, dynamic> json) => FinancialEntry.withEnums(
     category: Category.values.firstWhere((element) => element.name == json['category']),
+    type: EntryType.values.firstWhere((element) => element.name == json['type']),
     amount: json['amount'],
     date: json['date'] is Timestamp
         ? (json['date'] as Timestamp).toDate()
         : json['date'] as DateTime,
     description: json['description'],
-    type: Type.values.firstWhere((element) => element.name == json['type']),
   );
 }
 

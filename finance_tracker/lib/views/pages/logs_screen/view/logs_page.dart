@@ -2,23 +2,33 @@ import 'package:finance_tracker/data/classes/entities/category_entity.dart';
 import 'package:finance_tracker/data/classes/repo/authentication_repository.dart';
 import 'package:finance_tracker/data/classes/repo/firebase_expense_repo.dart';
 import 'package:finance_tracker/data/notifiers.dart';
+import 'package:finance_tracker/main.dart';
 import 'package:finance_tracker/views/pages/create_expense_screen/bloc/create_expense_bloc.dart';
 import 'package:finance_tracker/views/pages/create_expense_screen/view/create_expense_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LogsPage extends StatelessWidget {
+class LogsPage extends StatefulWidget {
   const LogsPage({super.key});
 
+  @override
+  State<LogsPage> createState() => _LogsPageState();
+}
+
+class _LogsPageState extends State<LogsPage> {
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final firebaseExpenseRepo = FirebaseExpenseRepo(
       authenticationRepository: context.read<AuthenticationRepository>(),
     );
-
     return Scaffold(
       body: StreamBuilder<List<FinancialEntry>>(
-        stream: firebaseExpenseRepo.getEntry(),
+        stream: objectbox.expenseStream.map((query) => query.find()),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

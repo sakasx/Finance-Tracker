@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:finance_tracker/data/classes/models/email.dart' show Email;
 import 'package:finance_tracker/data/classes/models/password.dart';
 import 'package:finance_tracker/data/classes/repo/authentication_repository.dart';
+import 'package:finance_tracker/data/classes/repo/firebase_expense_repo.dart';
 import 'package:formz/formz.dart';
 
 part 'login_page_state.dart';
@@ -24,6 +25,8 @@ class LoginCubit extends Cubit<LoginState> {
         email: state.email.value,
         password: state.password.value,
       );
+      await FirebaseExpenseRepo(authenticationRepository: _authenticationRepository)
+        .syncFromFirebaseToObjectBox();
       emit(state.withSubmissionSuccess());
     } on LogInWithEmailAndPasswordFailure catch (e) {
       emit(state.withSubmissionFailure(e.message));

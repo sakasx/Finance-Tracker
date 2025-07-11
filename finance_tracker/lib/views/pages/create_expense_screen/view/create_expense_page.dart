@@ -1,5 +1,6 @@
+import 'package:finance_tracker/data/classes/entities/category_entity.dart';
 import 'package:finance_tracker/data/classes/repo/authentication_repository.dart';
-import 'package:finance_tracker/data/classes/repo/expense_repository.dart';
+import 'package:finance_tracker/data/classes/repo/firebase_expense_repo.dart';
 import 'package:finance_tracker/views/pages/create_expense_screen/bloc/create_expense_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,7 +61,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                   DropdownButton(
                     hint: const Text('Category'),
                     value: typeController.text.isEmpty ? null : typeController.text,
-                    items: Type.values
+                    items: EntryType.values
                         .map((e) => DropdownMenuItem(value: e.name, child: Text(e.name)))
                         .toList(),
                     onChanged: (value) {
@@ -144,8 +145,12 @@ class _AddExpensePageState extends State<AddExpensePage> {
       final expense = FinancialEntry(
         amount: double.parse(ammountController.text),
         description: descriptionController.text,
-        type: Type.values.firstWhere((element) => element.name == typeController.text),
-        category: Category.values.firstWhere((element) => element.name == categoryController.text),
+        typeIndex: EntryType.values
+            .firstWhere((element) => element.name == typeController.text)
+            .index,
+        categoryIndex: Category.values
+            .firstWhere((element) => element.name == categoryController.text)
+            .index,
         date: selectedDate!,
       );
       await FirebaseExpenseRepo(
